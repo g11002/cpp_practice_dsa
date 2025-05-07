@@ -123,7 +123,7 @@ vector<int> dijkstra(int v, vector<vector<int>>adj[], int s) {
     priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
     vector<int>dist(v);
     for(int i=0;i<v;i++) dist[i]=1e9;
-
+    //e*log(v)
     dist[s]=0;
     pq.push({0,s});
     while(!pq.empty()) {
@@ -137,6 +137,33 @@ vector<int> dijkstra(int v, vector<vector<int>>adj[], int s) {
                 dist[adjn]=dis+edgew;
                 pq.push({dist[adjn],adjn});
             }
+        }
+    }
+    return dist;
+}
+
+// bellman ford - negative weights - directed graph
+vector<int> bellman_ford(int V, vector<vector<int>> edges, int S) {
+    vector<int>dist(V,1e9);
+    dist[S]=0;
+    //v*e
+    for(int i=0;i<V-1;i++) {
+        for(auto it:edges) {
+            int u=it[0];
+            int v=it[1];
+            int wt=it[2];
+            if(dist[u]!=1e9 && dist[u]+wt<dist[v]) {
+                dist[v]=dist[u]+wt;
+            }
+        }
+    }
+    // nth relaxation to check negative cycle
+    for(auto it:edges) {
+        int u=it[0];
+        int v=it[1];
+        int wt=it[2];
+        if(dist[u]!=1e9 && dist[u]+wt<dist[v]) {
+            return {-1};
         }
     }
     return dist;
