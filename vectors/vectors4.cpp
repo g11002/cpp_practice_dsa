@@ -59,6 +59,59 @@ int majorityElement(vector<int>& nums) {
     }
     return -1;
 }
+// Example 1: find common characters
+// Input: words = ["bella","label","roller"]
+// Output: ["e","l","l"]
+// Example 2:
+// Input: words = ["cool","lock","cook"]
+// Output: ["c","o"]
+bool check_in_strings(string s, vector<string> words) {
+    for (auto it : words) {
+        if (it.find(s) == string::npos) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int count_freq_word(char s, vector<string> words) {
+    int countt=0;
+    int new_count=INT_MAX;
+    string first_word = words[0];
+    countt = count(first_word.begin(), first_word.end(), s);
+    for(int i=1;i<words.size();i++) {
+        new_count = count(words[i].begin(), words[i].end(),s);
+        countt = min(countt, new_count);
+    }
+    return countt;
+}
+
+vector<string> commonChars(vector<string>& words) {
+    unordered_map<char,int>freq;
+    int n=words.size();
+    vector<string>ans;
+    for(auto it: words) {
+        for(auto i:it) {
+            freq[i]++;
+        }
+    }
+    for(auto it: freq) {
+        if (it.second >= 1) {
+                string val_str(1, it.first); 
+            bool state = check_in_strings(val_str, words);
+            if (state) {
+                int min_freq_per_word = count_freq_word(it.first, words);
+                while(min_freq_per_word--) {
+                    ans.push_back(val_str);
+                }
+            } else {
+                continue;
+            }
+        }
+    }
+    return ans;
+}
+
 int main() {
     // vector<int>arr = {1, 2, 3, 7, 5};
     // int target = 12;

@@ -69,7 +69,7 @@ bool bfs_isCycle(int V,vector<int>adj[]) {
     }
     return false;
 }
-    
+
 bool dfs_cycle(vector<int>adj[], int s, bool visited[], int parent) {
     visited[s]=true;
     for(int u:adj[s]) {
@@ -90,6 +90,7 @@ bool dfs_isCycle(int V, vector<int> adj[]) {
     }
     return false;
 }
+
 // Input: mat[][] = [[0, 1, 2], [0, 1, 2], [2, 1, 1]]
 // Output: 1
 // Explanation: Oranges at positions (0,2), (1,2), (2,0) will rot oranges at (0,1), (1,1), (2,2) and (2,1) in unit time.
