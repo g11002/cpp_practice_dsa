@@ -186,6 +186,86 @@ int sumSubarrayMins_alternate2(vector<int> &arr) {
     return sum;
 }
 
+// rain water trapping problem - O(n) - first solution
+vector<int> findLeftMax(vector<int> &arr, int &n) {
+    vector<int> left(n);
+    left[0] = arr[0];
+    for(int i=1; i < n; i++) {
+        left[i] = max(left[i-1], arr[i]);
+    }
+    return left;
+}
+vector<int> findRightMax(vector<int> &arr, int &n) {
+    vector<int> right(n);
+    right[n-1] = arr[n-1];
+    for(int i=n-2; i >= 0; i--) {
+        right[i] = max(right[i+1], arr[i]);
+    }
+    return right;
+}
+int trap(vector<int> &height){
+    int n = height.size();
+    int total = 0;
+    vector<int> leftMax = findLeftMax(height, n);
+    vector<int> rightMax = findRightMax(height, n);
+    for(int i=0; i < n; i++) {
+        if(height[i] < leftMax[i] && height[i] < rightMax[i]) {
+            total += min(leftMax[i], rightMax[i]) - height[i];
+        }
+    }
+    return total;
+}
+// rain water trapping problem - O(n) - second solution
+int trap(vector<int> &height){
+    int n=height.size();
+    int total=0;
+    int leftMax=0, rightMax=0;
+    int left=0, right=n-1;
+    while(left<right) {
+        if(height[left]<=height[right]) {
+            if(leftMax>height[left]) {
+                total+=leftMax-height[left];
+            } else {
+                leftMax = height[left];
+            }
+            left=left+1;
+        } else {
+            if(rightMax>height[right]) {
+                total+=rightMax-height[right];
+            } else {
+                rightMax = height[right];
+            }
+            right=right-1;
+        }
+    }
+    return total;
+}
+// max rectangular area within the heights
+// brute force approach
+int largestRectangleArea(vector<int> &heights) {
+    int n=heights.size();
+    int area = INT_MIN;
+    for(int i=0;i<n;i++) {
+        int minval = INT_MAX;
+        int curr = INT_MIN;
+        int count = 0;
+        for(int j=i;j<n;j++) {
+            if (heights[j]==0) {
+                break;
+            } else if(heights[j]<minval) {
+                minval = heights[j];
+                count++;
+            } else {
+                count++;
+            }
+            curr = minval*count;
+            area = max(area, curr);
+        }
+    }
+    if (area == INT_MIN) return 0;
+    return area;
+}
+
 int main() {
     // vector<int> arr = {6, 8, 0, 1, 3};
     // vector<int> arr = {1,3,2};
